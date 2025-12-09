@@ -1,5 +1,5 @@
 import { createContext, use, useEffect, useState } from "react"
-import { databases } from "../lib/appwrite"
+import { databases, client } from "../lib/appwrite"
 import { ID, Permission, Query, Role } from "appwrite"
 import { useUser } from "../hooks/useUser"
 
@@ -64,10 +64,26 @@ export function BooksProvider({children}) {
   }
 
   useEffect(() => {
+    let unsubscribe
+
     if (user) {
       fetchBooks()
+      
+      const channel = `databases.${DATABASE_ID}.collections.${TABLE_ID}.documents`
+      unsubscribe = client.subscribe(channel, (response) => {
+        const { payload, events } = response
+        if (events[0].includes("create")) {
+          setBooks(prevBooks => [payload, ...prevBooks])
+        }
+      })
     } else {
       setBooks([])
+    }
+
+    return () => {
+      if (unsubscribe) {
+        unsubscribe()
+      }
     }
   }, [user])
 

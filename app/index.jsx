@@ -10,24 +10,9 @@ import Spacer from "../components/Spacer"
 import { Colors } from '../constants/Colors'
 import { account } from '../lib/appwrite'
 
+
 const Home = () => {
   const [loading, setLoading] = useState(false)
-
-  const handlePing = async () => {
-    setLoading(true)
-    try {
-      const response = await account.get()
-      Alert.alert('Success!', `Connected to Appwrite!\nNo user logged in yet.`)
-    } catch (error) {
-      if (error.code === 401) {
-        Alert.alert('Success!', 'Connected to Appwrite!\nNo user logged in (expected).')
-      } else {
-        Alert.alert('Error', error.message)
-      }
-    } finally {
-      setLoading(false)
-    }
-  }
 
   return (
     <ThemedView style={styles.container}>
@@ -39,12 +24,6 @@ const Home = () => {
       <ThemedText style={{ marginTop: 10, marginBottom: 30 }}>
         Reading List App
       </ThemedText>
-
-      <ThemedButton 
-        title={loading ? "Connecting..." : "Send a Ping"} 
-        onPress={handlePing}
-        disabled={loading}
-      />
 
       <Spacer />
 

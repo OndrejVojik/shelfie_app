@@ -25,7 +25,7 @@ const Books = () => {
             <Pressable>
               <ThemedCard style = {styles.card}>
                 <ThemedText style = {styles.title}>{item.title}</ThemedText>
-                <ThemedText>Written by{item.author}</ThemedText>
+                <ThemedText>Written by {item.author}</ThemedText>
               </ThemedCard>
             </Pressable>
           )}
