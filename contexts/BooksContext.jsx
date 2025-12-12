@@ -16,7 +16,6 @@ export function BooksProvider({children}) {
     try {
         const response = await databases.listDocuments( DATABASE_ID, TABLE_ID, [Query.equal("userId", user.$id)] )
         setBooks(response.documents)
-        console.log(response.documents)
 
     } catch (error) {
       console.error(error.message)
@@ -25,7 +24,9 @@ export function BooksProvider({children}) {
 
   async function fetchBookById(id) {
     try {
+        const response = await databases.getDocument( DATABASE_ID , TABLE_ID, id )
       
+        return response
     } catch (error) {
       console.log(error.message)
     }
