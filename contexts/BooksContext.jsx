@@ -58,6 +58,7 @@ export function BooksProvider({children}) {
 
   async function deleteBook(id) {
     try {
+        await databases.deleteDocument( DATABASE_ID, TABLE_ID, id )
       
     } catch (error) {
       console.log(error.message)
@@ -75,6 +76,9 @@ export function BooksProvider({children}) {
         const { payload, events } = response
         if (events[0].includes("create")) {
           setBooks(prevBooks => [payload, ...prevBooks])
+        }
+        if (events[0].includes("delete")) {
+          setBooks(prevBooks => prevBooks.filter(book => book.$id !== payload.$id))
         }
       })
     } else {
